@@ -1,5 +1,3 @@
 export function createRequestSignal(signal: AbortSignal, timeoutMs: number): AbortSignal {
-  void signal;
-  void timeoutMs;
-  throw new Error('not implemented');
+  return AbortSignal.any([signal, AbortSignal.timeout(timeoutMs)]);
 }
