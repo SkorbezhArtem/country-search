@@ -4,10 +4,15 @@ import { el } from './dom.js';
 import { renderCountryCard } from './renderCountryCard.js';
 import { renderEmpty, renderError, renderLoading } from './renderStatus.js';
 
+export interface ResultsHandlers {
+  onSelect: (country: Country) => void;
+  onRetry: () => void;
+}
+
 export function renderResults(
   container: HTMLElement,
   state: SearchState,
-  onSelect: (country: Country) => void,
+  handlers: ResultsHandlers,
 ): void {
   switch (state.status) {
     case 'idle':
@@ -19,7 +24,7 @@ export function renderResults(
       return;
 
     case 'success': {
-      const cards = state.countries.map((country) => renderCountryCard(country, onSelect));
+      const cards = state.countries.map((country) => renderCountryCard(country, handlers.onSelect));
       container.replaceChildren(el('ul', { className: 'country-list' }, cards));
       return;
     }
@@ -29,7 +34,7 @@ export function renderResults(
       return;
 
     case 'error':
-      container.replaceChildren(renderError(state.kind));
+      container.replaceChildren(renderError(state.kind, handlers.onRetry));
       return;
   }
 }

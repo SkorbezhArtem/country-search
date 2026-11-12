@@ -27,9 +27,20 @@ export function renderEmpty(query: string): HTMLElement {
   ]);
 }
 
-export function renderError(kind: ErrorKind): HTMLElement {
+export function renderError(kind: ErrorKind, onRetry: () => void): HTMLElement {
+  const retryButton = el('button', {
+    className: 'status__retry',
+    text: 'Retry',
+    attrs: { type: 'button' },
+  });
+
+  retryButton.addEventListener('click', () => {
+    onRetry();
+  });
+
   return el('div', { className: 'status status--error', attrs: { role: 'alert' } }, [
     el('p', { className: 'status__title', text: 'Search failed' }),
     el('p', { className: 'status__text', text: ERROR_MESSAGES[kind] }),
+    retryButton,
   ]);
 }
