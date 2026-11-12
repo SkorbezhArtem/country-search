@@ -33,6 +33,7 @@ export function createSearchController({
   const listeners = new Set<SearchListener>();
   let state: SearchState = { status: 'idle' };
   let lastQuery = '';
+  let activeRequest: AbortController | undefined;
 
   function setState(next: SearchState): void {
     state = next;
@@ -41,22 +42,40 @@ export function createSearchController({
     }
   }
 
+  function abortActiveRequest(): void {
+    activeRequest?.abort();
+    activeRequest = undefined;
+  }
+
   async function search(query: string): Promise<void> {
-    const signal = createRequestSignal(new AbortController().signal, timeoutMs);
+    abortActiveRequest();
+
+    const request = new AbortController();
+    activeRequest = request;
+    const signal = createRequestSignal(request.signal, timeoutMs);
 
     try {
       const countries = await searchCountries(query, signal);
+
+      if (request.signal.aborted) {
+        return;
+      }
+
       setState(
         countries.length > 0 ? { status: 'success', query, countries } : { status: 'empty', query },
       );
     } catch (error) {
       const kind = classifyError(error);
 
-      if (kind === 'aborted') {
+      if (kind === 'aborted' || request.signal.aborted) {
         return;
       }
 
       setState({ status: 'error', query, kind });
+    } finally {
+      if (activeRequest === request) {
+        activeRequest = undefined;
+      }
     }
   }
 
@@ -68,6 +87,7 @@ export function createSearchController({
 
   return {
     setQuery(text) {
+      abortActiveRequest();
       lastQuery = text.trim();
 
       if (lastQuery === '') {
