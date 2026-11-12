@@ -1,5 +1,6 @@
 import type { SearchController } from '../search/searchController.js';
 import { el } from './dom.js';
+import { renderResults } from './renderResults.js';
 
 export function mountApp(root: HTMLElement, controller: SearchController): void {
   const input = el('input', {
@@ -18,7 +19,7 @@ export function mountApp(root: HTMLElement, controller: SearchController): void 
   });
 
   controller.subscribe((state) => {
-    results.textContent = state.status;
+    renderResults(results, state, () => undefined);
   });
 
   root.append(
