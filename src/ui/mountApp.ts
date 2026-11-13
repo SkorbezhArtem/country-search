@@ -2,6 +2,7 @@ import type { SearchController } from '../search/searchController.js';
 import { el } from './dom.js';
 import { renderResults } from './renderResults.js';
 import type { ResultsHandlers } from './renderResults.js';
+import { createCountryDialog } from './renderCountryDialog.js';
 
 export function mountApp(root: HTMLElement, controller: SearchController): void {
   const input = el('input', {
@@ -19,8 +20,12 @@ export function mountApp(root: HTMLElement, controller: SearchController): void 
     controller.setQuery(input.value);
   });
 
+  const detailsDialog = createCountryDialog();
+
   const handlers: ResultsHandlers = {
-    onSelect: () => undefined,
+    onSelect: (country) => {
+      detailsDialog.open(country);
+    },
     onRetry: () => {
       controller.retry();
     },
@@ -36,5 +41,6 @@ export function mountApp(root: HTMLElement, controller: SearchController): void 
       input,
     ]),
     results,
+    detailsDialog.element,
   );
 }
