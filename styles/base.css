@@ -47,3 +47,13 @@ button {
 .results {
   padding-bottom: var(--space-7);
 }
+
+@media (max-width: 480px) {
+  .header {
+    padding-block: var(--space-5) var(--space-4);
+  }
+
+  .results {
+    padding-bottom: var(--space-5);
+  }
+}
