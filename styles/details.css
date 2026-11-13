@@ -102,6 +102,25 @@ body:has(.details[open]) {
 }
 
 @media (max-width: 480px) {
+  .details__content {
+    gap: var(--space-4);
+    padding: var(--space-4);
+  }
+
+  .details__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .details__flag {
+    width: 72px;
+  }
+
+  .details__title {
+    font-size: 1.25rem;
+  }
+
   .details__row {
     grid-template-columns: 1fr;
     gap: var(--space-1);
