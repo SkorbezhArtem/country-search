@@ -1,8 +1,7 @@
 import type { Country } from '../api/types.js';
 import { el } from './dom.js';
-import { formatNumber } from './format.js';
+import { formatNumber, NO_VALUE } from './format.js';
 
-const NO_VALUE = '—';
 const FLAG_WIDTH = '48';
 
 function renderFact(label: string, value: string): HTMLElement {

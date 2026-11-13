@@ -1,8 +1,7 @@
 import type { Country, Currency } from '../api/types.js';
 import { el } from './dom.js';
-import { formatNumber } from './format.js';
+import { formatNumber, NO_VALUE } from './format.js';
 
-const NO_VALUE = '—';
 const TITLE_ID = 'country-details-title';
 const FLAG_WIDTH = '96';
 
