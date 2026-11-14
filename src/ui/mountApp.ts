@@ -5,10 +5,15 @@ import { createCountryDialog } from './renderCountryDialog.js';
 import { renderResults } from './renderResults.js';
 import type { ResultsHandlers } from './renderResults.js';
 
+export interface AppServices {
+  controller: SearchController;
+  history: SearchHistory;
+  themeSwitcher: HTMLElement;
+}
+
 export function mountApp(
   root: HTMLElement,
-  controller: SearchController,
-  history: SearchHistory,
+  { controller, history, themeSwitcher }: AppServices,
 ): void {
   const input = el('input', {
     className: 'search__input',
@@ -52,12 +57,15 @@ export function mountApp(
 
   root.append(
     el('header', { className: 'header' }, [
-      el('h1', { className: 'header__title' }, [
-        el('img', {
-          className: 'header__logo',
-          attrs: { src: 'favicon.svg', alt: '', width: '40', height: '40' },
-        }),
-        'Country Search',
+      el('div', { className: 'header__top' }, [
+        el('h1', { className: 'header__title' }, [
+          el('img', {
+            className: 'header__logo',
+            attrs: { src: 'favicon.svg', alt: '', width: '40', height: '40' },
+          }),
+          'Country Search',
+        ]),
+        themeSwitcher,
       ]),
       input,
     ]),
