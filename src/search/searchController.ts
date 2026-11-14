@@ -24,6 +24,7 @@ export interface SearchControllerOptions {
 export interface SearchController {
   setQuery(query: string): void;
   retry(): void;
+  searchNow(query: string): void;
   getState(): SearchState;
   subscribe(listener: SearchListener): () => void;
 }
@@ -109,6 +110,11 @@ export function createSearchController({
 
       setState({ status: 'loading', query: lastQuery });
       void search(lastQuery);
+    },
+
+    searchNow(query) {
+      void query;
+      throw new Error('not implemented');
     },
 
     getState() {
