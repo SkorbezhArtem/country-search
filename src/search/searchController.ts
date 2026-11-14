@@ -4,6 +4,7 @@ import { debounce } from '../lib/debounce.js';
 import { classifyError } from './classifyError.js';
 import type { SearchErrorKind } from './classifyError.js';
 import { createRequestSignal } from './createRequestSignal.js';
+import type { SearchFn } from './createCachedSearch.js';
 
 export type SearchState =
   | { status: 'idle' }
@@ -17,6 +18,7 @@ export type SearchListener = (state: SearchState) => void;
 export interface SearchControllerOptions {
   debounceMs: number;
   timeoutMs: number;
+  search?: SearchFn;
 }
 
 export interface SearchController {
@@ -29,6 +31,7 @@ export interface SearchController {
 export function createSearchController({
   debounceMs,
   timeoutMs,
+  search: performSearch = searchCountries,
 }: SearchControllerOptions): SearchController {
   const listeners = new Set<SearchListener>();
   let state: SearchState = { status: 'idle' };
@@ -55,7 +58,7 @@ export function createSearchController({
     const signal = createRequestSignal(request.signal, timeoutMs);
 
     try {
-      const countries = await searchCountries(query, signal);
+      const countries = await performSearch(query, signal);
 
       if (request.signal.aborted) {
         return;
