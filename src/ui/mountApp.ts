@@ -52,7 +52,13 @@ export function mountApp(
 
   root.append(
     el('header', { className: 'header' }, [
-      el('h1', { className: 'header__title', text: 'Country Search' }),
+      el('h1', { className: 'header__title' }, [
+        el('img', {
+          className: 'header__logo',
+          attrs: { src: 'favicon.svg', alt: '', width: '40', height: '40' },
+        }),
+        'Country Search',
+      ]),
       input,
     ]),
     results,
