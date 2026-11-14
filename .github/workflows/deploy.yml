@@ -38,7 +38,7 @@ jobs:
       - name: Assemble site
         run: |
           mkdir _site
-          cp -r index.html styles dist _site/
+          cp -r index.html favicon.svg styles dist _site/
 
       - uses: actions/configure-pages@v5
 
