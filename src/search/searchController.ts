@@ -112,9 +112,18 @@ export function createSearchController({
       void search(lastQuery);
     },
 
-    searchNow(query) {
-      void query;
-      throw new Error('not implemented');
+    searchNow(text) {
+      searchLastQuery.cancel();
+      lastQuery = text.trim();
+
+      if (lastQuery === '') {
+        abortActiveRequest();
+        setState({ status: 'idle' });
+        return;
+      }
+
+      setState({ status: 'loading', query: lastQuery });
+      void search(lastQuery);
     },
 
     getState() {
