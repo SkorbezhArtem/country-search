@@ -32,4 +32,4 @@ controller.subscribe((state) => {
   }
 });
 
-mountApp(document.body, controller);
+mountApp(document.body, controller, history);

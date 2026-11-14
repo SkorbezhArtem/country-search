@@ -1,10 +1,15 @@
 import type { SearchController } from '../search/searchController.js';
+import type { SearchHistory } from '../search/searchHistory.js';
 import { el } from './dom.js';
+import { createCountryDialog } from './renderCountryDialog.js';
 import { renderResults } from './renderResults.js';
 import type { ResultsHandlers } from './renderResults.js';
-import { createCountryDialog } from './renderCountryDialog.js';
 
-export function mountApp(root: HTMLElement, controller: SearchController): void {
+export function mountApp(
+  root: HTMLElement,
+  controller: SearchController,
+  history: SearchHistory,
+): void {
   const input = el('input', {
     className: 'search__input',
     attrs: {
@@ -15,11 +20,6 @@ export function mountApp(root: HTMLElement, controller: SearchController): void 
     },
   });
   const results = el('main', { className: 'results' });
-
-  input.addEventListener('input', () => {
-    controller.setQuery(input.value);
-  });
-
   const detailsDialog = createCountryDialog();
 
   const handlers: ResultsHandlers = {
@@ -29,11 +29,26 @@ export function mountApp(root: HTMLElement, controller: SearchController): void 
     onRetry: () => {
       controller.retry();
     },
+    getHistory: () => history.getAll(),
+    onHistorySelect: (query) => {
+      input.value = query;
+      controller.searchNow(query);
+    },
+    onHistoryClear: () => {
+      history.clear();
+      render();
+    },
   };
 
-  controller.subscribe((state) => {
-    renderResults(results, state, handlers);
+  function render(): void {
+    renderResults(results, controller.getState(), handlers);
+  }
+
+  input.addEventListener('input', () => {
+    controller.setQuery(input.value);
   });
+
+  controller.subscribe(render);
 
   root.append(
     el('header', { className: 'header' }, [
@@ -43,4 +58,6 @@ export function mountApp(root: HTMLElement, controller: SearchController): void 
     results,
     detailsDialog.element,
   );
+
+  render();
 }
