@@ -17,7 +17,8 @@ export function debounce<A extends unknown[]>(
 
   return Object.assign(debounced, {
     cancel(): void {
-      throw new Error('not implemented');
+      clearTimeout(timerId);
+      timerId = undefined;
     },
   });
 }
