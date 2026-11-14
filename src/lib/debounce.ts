@@ -1,13 +1,23 @@
+export type DebouncedFunction<A extends unknown[]> = ((...args: A) => void) & {
+  cancel(): void;
+};
+
 export function debounce<A extends unknown[]>(
   fn: (...args: A) => void,
   delay: number,
-): (...args: A) => void {
+): DebouncedFunction<A> {
   let timerId: ReturnType<typeof setTimeout> | undefined;
 
-  return (...args: A): void => {
+  const debounced = (...args: A): void => {
     clearTimeout(timerId);
     timerId = setTimeout(() => {
       fn(...args);
     }, delay);
   };
+
+  return Object.assign(debounced, {
+    cancel(): void {
+      throw new Error('not implemented');
+    },
+  });
 }

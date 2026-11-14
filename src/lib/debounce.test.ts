@@ -109,4 +109,37 @@ describe('debounce', () => {
     expect(first).toHaveBeenCalledTimes(1);
     expect(second).not.toHaveBeenCalled();
   });
+  describe('cancel', () => {
+    it('prevents a pending call', () => {
+      const fn = vi.fn();
+      const debounced = debounce(fn, 100);
+
+      debounced();
+      debounced.cancel();
+      vi.advanceTimersByTime(100);
+
+      expect(fn).not.toHaveBeenCalled();
+    });
+
+    it('does nothing when no call is pending', () => {
+      const debounced = debounce(vi.fn(), 100);
+
+      expect(() => {
+        debounced.cancel();
+      }).not.toThrow();
+    });
+
+    it('does not affect a call made after cancel', () => {
+      const fn = vi.fn<(value: string) => void>();
+      const debounced = debounce(fn, 100);
+
+      debounced('first');
+      debounced.cancel();
+      debounced('second');
+      vi.advanceTimersByTime(100);
+
+      expect(fn).toHaveBeenCalledTimes(1);
+      expect(fn).toHaveBeenCalledWith('second');
+    });
+  });
 });
