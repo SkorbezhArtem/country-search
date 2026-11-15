@@ -4,6 +4,7 @@ import { el } from './dom.js';
 import { renderCountryCard } from './renderCountryCard.js';
 import { renderHistory } from './renderHistory.js';
 import { renderEmpty, renderError, renderLoading } from './renderStatus.js';
+import { EXAMPLE_QUERIES, renderInvite } from './renderInvite.js';
 
 export interface ResultsHandlers {
   onSelect: (country: Country) => void;
@@ -17,7 +18,7 @@ function renderIdle(container: HTMLElement, handlers: ResultsHandlers): void {
   const entries = handlers.getHistory();
 
   if (entries.length === 0) {
-    container.replaceChildren();
+    container.replaceChildren(renderInvite(EXAMPLE_QUERIES, handlers.onHistorySelect));
     return;
   }
 

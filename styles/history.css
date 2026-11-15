@@ -46,7 +46,8 @@
   max-width: 100%;
 }
 
-.history__item {
+.history__item,
+.invite__example {
   max-width: 100%;
   padding: var(--space-2) var(--space-4);
   overflow: hidden;
@@ -68,7 +69,8 @@
     color: var(--danger);
   }
 
-  .history__item:hover {
+  .history__item:hover,
+  .invite__example:hover {
     border-color: var(--accent);
     background: var(--surface-hover);
   }
@@ -76,7 +78,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .history__clear,
-  .history__item {
+  .history__item,
+  .invite__example {
     transition: none;
   }
 }
