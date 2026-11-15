@@ -1,0 +1,9 @@
+.results__summary {
+  margin: 0 0 var(--space-3);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.results__summary:empty {
+  display: none;
+}

@@ -4,6 +4,7 @@ import { el } from './dom.js';
 import { createCountryDialog } from './renderCountryDialog.js';
 import { renderResults } from './renderResults.js';
 import type { ResultsHandlers } from './renderResults.js';
+import { getResultsSummary } from './resultsSummary.js';
 
 export interface AppServices {
   controller: SearchController;
@@ -24,7 +25,9 @@ export function mountApp(
       autocomplete: 'off',
     },
   });
-  const results = el('main', { className: 'results' });
+  const summary = el('p', { className: 'results__summary', attrs: { role: 'status' } });
+  const content = el('div', { className: 'results__content' });
+  const results = el('main', { className: 'results' }, [summary, content]);
   const detailsDialog = createCountryDialog();
 
   const handlers: ResultsHandlers = {
@@ -46,7 +49,10 @@ export function mountApp(
   };
 
   function render(): void {
-    renderResults(results, controller.getState(), handlers);
+    const state = controller.getState();
+
+    renderResults(content, state, handlers);
+    summary.textContent = getResultsSummary(state);
   }
 
   input.addEventListener('input', () => {
