@@ -1,0 +1,77 @@
+.results[data-view='list'] .country-list {
+  grid-template-columns: 1fr;
+  gap: var(--space-2);
+}
+
+.results[data-view='list'] .country-card {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 0;
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface);
+  color: var(--text);
+  isolation: auto;
+}
+
+.results[data-view='list'] .country-card__flag {
+  position: static;
+  inset: auto;
+  z-index: auto;
+  width: 64px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.results[data-view='list'] .country-card:hover .country-card__flag {
+  transform: none;
+}
+
+.results[data-view='list'] .country-card__body {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-4);
+  padding: 0;
+  background: none;
+}
+
+.results[data-view='list'] .country-card__name {
+  flex-basis: 100%;
+  font-size: 1.05rem;
+  text-shadow: none;
+}
+
+.results[data-view='list'] .country-card__fact {
+  justify-content: flex-start;
+  gap: var(--space-2);
+  font-size: 0.875rem;
+  text-shadow: none;
+}
+
+.results[data-view='list'] .country-card__label {
+  color: var(--text-muted);
+}
+
+.results[data-view='list'] .country-card__value {
+  text-align: left;
+}
+
+@media (hover: hover) {
+  .results[data-view='list'] .country-card:hover {
+    background: var(--surface-hover);
+  }
+}
+
+@media (max-width: 480px) {
+  .results[data-view='list'] .country-card {
+    grid-template-columns: 48px 1fr;
+    gap: var(--space-3);
+  }
+
+  .results[data-view='list'] .country-card__flag {
+    width: 48px;
+    height: 34px;
+  }
+}

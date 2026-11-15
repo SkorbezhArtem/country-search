@@ -7,12 +7,16 @@ import { createCountryDialog } from './renderCountryDialog.js';
 import { renderResults } from './renderResults.js';
 import type { ResultsHandlers } from './renderResults.js';
 import { renderSortControl } from './renderSortControl.js';
+import { renderViewSwitcher } from './renderViewSwitcher.js';
 import { getResultsSummary } from './resultsSummary.js';
+import type { ViewMode } from './viewMode.js';
 
 export interface AppServices {
   controller: SearchController;
   history: SearchHistory;
   themeSwitcher: HTMLElement;
+  initialViewMode: ViewMode;
+  onViewModeChange: (mode: ViewMode) => void;
 }
 
 function applySort(state: SearchState, order: SortOrder): SearchState {
@@ -23,7 +27,7 @@ function applySort(state: SearchState, order: SortOrder): SearchState {
 
 export function mountApp(
   root: HTMLElement,
-  { controller, history, themeSwitcher }: AppServices,
+  { controller, history, themeSwitcher, initialViewMode, onViewModeChange }: AppServices,
 ): void {
   let sortOrder: SortOrder = 'relevance';
 
@@ -41,9 +45,17 @@ export function mountApp(
     sortOrder = order;
     render();
   });
-  const toolbar = el('div', { className: 'results__toolbar' }, [summary, sortControl.element]);
+  const viewSwitcher = renderViewSwitcher(initialViewMode, (mode) => {
+    results.dataset.view = mode;
+    onViewModeChange(mode);
+  });
+  const actions = el('div', { className: 'results__actions' }, [sortControl.element, viewSwitcher]);
+  const toolbar = el('div', { className: 'results__toolbar' }, [summary, actions]);
   const content = el('div', { className: 'results__content' });
-  const results = el('main', { className: 'results' }, [toolbar, content]);
+  const results = el('main', { className: 'results', attrs: { 'data-view': initialViewMode } }, [
+    toolbar,
+    content,
+  ]);
   const detailsDialog = createCountryDialog();
 
   const handlers: ResultsHandlers = {

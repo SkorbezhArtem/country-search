@@ -6,6 +6,7 @@ import type { HistoryStorage } from './search/searchHistory.js';
 import { mountApp } from './ui/mountApp.js';
 import { renderThemeSwitcher } from './ui/renderThemeSwitcher.js';
 import { applyThemePreference, loadThemePreference, saveThemePreference } from './ui/theme.js';
+import { loadViewMode, saveViewMode } from './ui/viewMode.js';
 
 const DEBOUNCE_MS = 300;
 const REQUEST_TIMEOUT_MS = 8000;
@@ -42,4 +43,12 @@ const themeSwitcher = renderThemeSwitcher(themePreference, (next) => {
   saveThemePreference(storage, next);
 });
 
-mountApp(document.body, { controller, history, themeSwitcher });
+mountApp(document.body, {
+  controller,
+  history,
+  themeSwitcher,
+  initialViewMode: loadViewMode(storage),
+  onViewModeChange: (mode) => {
+    saveViewMode(storage, mode);
+  },
+});

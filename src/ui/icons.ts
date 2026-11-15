@@ -1,7 +1,7 @@
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const ICON_SIZE = '18';
 
-export type IconName = 'system' | 'light' | 'dark';
+export type IconName = 'system' | 'light' | 'dark' | 'cards' | 'list';
 
 interface Shape {
   tag: 'circle' | 'rect' | 'path';
@@ -26,6 +26,20 @@ const ICON_SHAPES: Record<IconName, Shape[]> = {
     { tag: 'path', attrs: { d: 'm19.07 4.93-1.41 1.41' } },
   ],
   dark: [{ tag: 'path', attrs: { d: 'M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z' } }],
+  cards: [
+    { tag: 'rect', attrs: { x: '3', y: '3', width: '7', height: '7', rx: '1' } },
+    { tag: 'rect', attrs: { x: '14', y: '3', width: '7', height: '7', rx: '1' } },
+    { tag: 'rect', attrs: { x: '3', y: '14', width: '7', height: '7', rx: '1' } },
+    { tag: 'rect', attrs: { x: '14', y: '14', width: '7', height: '7', rx: '1' } },
+  ],
+  list: [
+    { tag: 'path', attrs: { d: 'M8 6h13' } },
+    { tag: 'path', attrs: { d: 'M8 12h13' } },
+    { tag: 'path', attrs: { d: 'M8 18h13' } },
+    { tag: 'path', attrs: { d: 'M3 6h.01' } },
+    { tag: 'path', attrs: { d: 'M3 12h.01' } },
+    { tag: 'path', attrs: { d: 'M3 18h.01' } },
+  ],
 };
 
 export function renderIcon(name: IconName): SVGSVGElement {
