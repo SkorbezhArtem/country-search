@@ -1,0 +1,32 @@
+.results__toolbar {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    'summary view'
+    'sort sort';
+  align-items: center;
+  column-gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.results__toolbar[hidden] {
+  display: none;
+}
+
+.results__summary {
+  grid-area: summary;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.results__summary:empty {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .results__toolbar {
+    grid-template-columns: 1fr auto auto;
+    grid-template-areas: 'summary sort view';
+  }
+}

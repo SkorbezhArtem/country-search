@@ -1,0 +1,55 @@
+.view-switcher {
+  grid-area: view;
+  justify-self: end;
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: repeat(2, 36px);
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+}
+
+.view-switcher__thumb {
+  position: absolute;
+  inset: 3px auto 3px 3px;
+  width: 36px;
+  border-radius: 999px;
+  background: var(--accent);
+  transition: transform 200ms ease;
+}
+
+.view-switcher[data-selected='list'] .view-switcher__thumb {
+  transform: translateX(100%);
+}
+
+.view-switcher__option {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 200ms ease;
+}
+
+.view-switcher__option[aria-pressed='true'] {
+  color: var(--accent-contrast);
+}
+
+@media (hover: hover) {
+  .view-switcher__option:hover:not([aria-pressed='true']) {
+    color: var(--text);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .view-switcher__thumb,
+  .view-switcher__option {
+    transition: none;
+  }
+}

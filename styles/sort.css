@@ -1,0 +1,108 @@
+.sort {
+  grid-area: sort;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.sort[hidden] {
+  display: none;
+}
+
+.sort__label {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.sort__select {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-s);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.sort__select:focus-visible {
+  border-color: var(--accent);
+}
+
+@media (min-width: 640px) {
+  .sort {
+    margin-top: 0;
+  }
+
+  .sort__select {
+    flex: none;
+    min-width: 14rem;
+  }
+}
+
+@supports (appearance: base-select) {
+  .sort__select,
+  .sort__select::picker(select) {
+    appearance: base-select;
+  }
+
+  .sort__select {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .sort__select::picker-icon {
+    color: var(--text-muted);
+    transition: rotate 150ms ease;
+  }
+
+  .sort__select:open::picker-icon {
+    rotate: 180deg;
+  }
+
+  .sort__select::picker(select) {
+    margin-top: var(--space-1);
+    padding: var(--space-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+    box-shadow: 0 12px 32px rgb(0 0 0 / 0.3);
+  }
+
+  .sort__select option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-s);
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  .sort__select option:hover,
+  .sort__select option:focus-visible {
+    background: var(--surface-hover);
+  }
+
+  .sort__select option:checked {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .sort__select option::checkmark {
+    order: 1;
+    margin-left: auto;
+    color: var(--accent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sort__select::picker-icon {
+    transition: none;
+  }
+}

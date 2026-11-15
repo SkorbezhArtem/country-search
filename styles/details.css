@@ -1,0 +1,141 @@
+.details {
+  width: min(100% - 2 * var(--space-4), 560px);
+  max-height: calc(100% - 2 * var(--space-4));
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-m);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 24px 64px rgb(0 0 0 / 0.35);
+}
+
+.details[open] {
+  animation: details-in 180ms ease-out;
+}
+
+.details::backdrop {
+  background: rgb(0 0 0 / 0.6);
+  backdrop-filter: blur(4px);
+}
+
+body:has(.details[open]) {
+  overflow: hidden;
+}
+
+.details__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-5);
+}
+
+.details__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.details__flag {
+  flex-shrink: 0;
+  width: 96px;
+  height: auto;
+  border-radius: var(--radius-s);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.25);
+}
+
+.details__heading {
+  min-width: 0;
+}
+
+.details__title {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.25;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.details__subtitle {
+  margin: var(--space-1) 0 0;
+  color: var(--text-muted);
+}
+
+.details__list {
+  margin: 0;
+}
+
+.details__row {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--border);
+}
+
+.details__row:last-child {
+  border-bottom: 0;
+}
+
+.details__label {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.details__value {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.details__close {
+  align-self: flex-end;
+  padding: var(--space-2) var(--space-5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-s);
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.details__close:hover {
+  background: var(--surface-hover);
+}
+
+@media (max-width: 480px) {
+  .details__content {
+    gap: var(--space-4);
+    padding: var(--space-4);
+  }
+
+  .details__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .details__flag {
+    width: 72px;
+  }
+
+  .details__title {
+    font-size: 1.25rem;
+  }
+
+  .details__row {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+}
+
+@keyframes details-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .details[open] {
+    animation: none;
+  }
+}
