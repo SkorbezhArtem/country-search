@@ -1,9 +1,12 @@
-import type { SearchController } from '../search/searchController.js';
+import type { SearchController, SearchState } from '../search/searchController.js';
 import type { SearchHistory } from '../search/searchHistory.js';
+import { sortCountries } from '../search/sortCountries.js';
+import type { SortOrder } from '../search/sortCountries.js';
 import { el } from './dom.js';
 import { createCountryDialog } from './renderCountryDialog.js';
 import { renderResults } from './renderResults.js';
 import type { ResultsHandlers } from './renderResults.js';
+import { renderSortControl } from './renderSortControl.js';
 import { getResultsSummary } from './resultsSummary.js';
 
 export interface AppServices {
@@ -12,10 +15,18 @@ export interface AppServices {
   themeSwitcher: HTMLElement;
 }
 
+function applySort(state: SearchState, order: SortOrder): SearchState {
+  return state.status === 'success'
+    ? { ...state, countries: sortCountries(state.countries, order) }
+    : state;
+}
+
 export function mountApp(
   root: HTMLElement,
   { controller, history, themeSwitcher }: AppServices,
 ): void {
+  let sortOrder: SortOrder = 'relevance';
+
   const input = el('input', {
     className: 'search__input',
     attrs: {
@@ -26,8 +37,13 @@ export function mountApp(
     },
   });
   const summary = el('p', { className: 'results__summary', attrs: { role: 'status' } });
+  const sortControl = renderSortControl(sortOrder, (order) => {
+    sortOrder = order;
+    render();
+  });
+  const toolbar = el('div', { className: 'results__toolbar' }, [summary, sortControl.element]);
   const content = el('div', { className: 'results__content' });
-  const results = el('main', { className: 'results' }, [summary, content]);
+  const results = el('main', { className: 'results' }, [toolbar, content]);
   const detailsDialog = createCountryDialog();
 
   const handlers: ResultsHandlers = {
@@ -50,9 +66,12 @@ export function mountApp(
 
   function render(): void {
     const state = controller.getState();
+    const summaryText = getResultsSummary(state);
 
-    renderResults(content, state, handlers);
-    summary.textContent = getResultsSummary(state);
+    renderResults(content, applySort(state, sortOrder), handlers);
+    summary.textContent = summaryText;
+    sortControl.setVisible(state.status === 'success' && state.countries.length > 1);
+    toolbar.hidden = summaryText === '';
   }
 
   input.addEventListener('input', () => {
