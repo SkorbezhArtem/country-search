@@ -1,4 +1,6 @@
 .view-switcher {
+  grid-area: view;
+  justify-self: end;
   position: relative;
   display: inline-grid;
   grid-template-columns: repeat(2, 36px);

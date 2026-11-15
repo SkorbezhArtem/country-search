@@ -49,8 +49,12 @@ export function mountApp(
     results.dataset.view = mode;
     onViewModeChange(mode);
   });
-  const actions = el('div', { className: 'results__actions' }, [sortControl.element, viewSwitcher]);
-  const toolbar = el('div', { className: 'results__toolbar' }, [summary, actions]);
+
+  const toolbar = el('div', { className: 'results__toolbar' }, [
+    summary,
+    sortControl.element,
+    viewSwitcher,
+  ]);
   const content = el('div', { className: 'results__content' });
   const results = el('main', { className: 'results', attrs: { 'data-view': initialViewMode } }, [
     toolbar,

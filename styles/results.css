@@ -1,9 +1,11 @@
 .results__toolbar {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    'summary view'
+    'sort sort';
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
+  column-gap: var(--space-3);
   margin-bottom: var(--space-3);
 }
 
@@ -12,14 +14,19 @@
 }
 
 .results__summary {
+  grid-area: summary;
   margin: 0;
   color: var(--text-muted);
   font-size: 0.9rem;
 }
 
-.results__actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-3);
+.results__summary:empty {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .results__toolbar {
+    grid-template-columns: 1fr auto auto;
+    grid-template-areas: 'summary sort view';
+  }
 }
